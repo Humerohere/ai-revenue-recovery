@@ -1,0 +1,34 @@
+[project]
+name = "revive"
+version = "0.1.0"
+description = "Missed-call follow-up and booking for US auto repair shops"
+requires-python = ">=3.13"
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+src = ["backend"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC", "S", "RUF"]
+ignore = ["S101"]  # assert is fine in tests
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S105", "S106"]
+"backend/alembic/*" = ["E501"]
+
+[tool.mypy]
+python_version = "3.13"
+plugins = ["pydantic.mypy"]
+mypy_path = "backend"
+ignore_missing_imports = true
+warn_unused_ignores = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["backend"]   # so tests import `app.*` without a packaging step
+addopts = "-q"
+markers = [
+    "integration: requires Postgres and Redis",
+]
